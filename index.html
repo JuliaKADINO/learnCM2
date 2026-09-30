@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Learning Machine — Semaine 4 jours</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="logo">LM</div><div><h1>Learning Machine</h1><p>CM2 • progression sauvegardée sur cet appareil</p></div></div>
+    <nav class="nav">
+      <button class="active" data-view="home">Cette semaine</button>
+      <button data-view="eval">Préparer une évaluation</button>
+      <button data-view="tomorrow">Réviser les cours de demain</button>
+      <button data-view="parent">Bilan parent</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="view active">
+      <div class="hero">
+        <div class="eyebrow">Mission secrète • 4 jours</div>
+        <h2>Quatre missions, zéro routine.</h2>
+        <p>Chaque jour mélange français, maths, anglais et petits défis. Les notions importantes reviennent discrètement pour devenir automatiques. Le dernier jour ne contient <b>aucune nouvelle notion</b> : seulement une réactivation intelligente.</p>
+        <div class="chips"><span class="chip">45–60 min / jour</span><span class="chip">QCM • 3 choix</span><span class="chip">Indice à la demande</span><span class="chip">Reprise exacte après fermeture</span><span class="chip">🎀 mission satin</span></div>
+      </div>
+      <div class="grid" id="dayGrid"></div>
+      <div class="section-title"><h2>Règle de la semaine</h2><p>On avance même si une question résiste.</p></div>
+      <div class="two">
+        <div class="card"><h3>🧠 Mode Jouer</h3><p class="small">Répondre, demander un indice si nécessaire, passer une question ou voir la réponse. Rien ne bloque la fin d'une série.</p></div>
+        <div class="card"><h3>🛠️ Mode Créer</h3><p class="small">Sur certaines questions IA, comprendre comment vérifier une réponse, préciser une consigne et protéger les informations personnelles.</p></div>
+      </div>
+    </section>
+
+    <section id="quiz" class="view">
+      <div class="section-title"><h2 id="quizTitle"></h2><p id="quizSubtitle"></p></div>
+      <div class="quiz-shell">
+        <aside class="card side">
+          <div class="row"><b id="qCounter">Question</b><span class="small" id="dayPct">0%</span></div>
+          <div class="bar" style="margin-top:9px"><i id="dayBar"></i></div>
+          <div class="question-nav" id="questionNav"></div>
+          <div style="margin-top:14px" class="small">🟢 sans aide &nbsp; 🟠 avec aide &nbsp; 🔴 révélée / abandonnée / souvent ratée</div>
+          <button class="btn ghost" style="margin-top:15px;width:100%" onclick="showView('home')">← Retour aux missions</button>
+        </aside>
+        <section class="card question-card" id="questionCard"></section>
+      </div>
+    </section>
+
+    <section id="eval" class="view">
+      <div class="section-title"><h2>Préparer une évaluation</h2><p>Deux priorités cette semaine, travaillées en petites doses plutôt qu'en bloc.</p></div>
+      <div class="two">
+        <div class="card"><div class="eyebrow">Français</div><h3>Le verbe</h3><p class="small">J1 à J3 : temps, reconnaissance du verbe conjugué, infinitif, groupes. J4 : révision uniquement.</p><div class="bar"><i id="evalVerbBar"></i></div><p class="small" id="evalVerbText"></p></div>
+        <div class="card"><div class="eyebrow">Mathématiques</div><h3>Les mesures de longueurs</h3><p class="small">J1 à J3 : unités, conversions, comparaison, calculs, problèmes. J4 : révision uniquement.</p><div class="bar"><i id="evalLengthBar"></i></div><p class="small" id="evalLengthText"></p></div>
+      </div>
+      <div class="card" style="margin-top:14px"><h3>Ce qui compte avant l'évaluation</h3><div class="two"><div class="callout"><b>Verbe</b><br><span class="small">Trouver le mot qui change → retrouver l'infinitif → déterminer le groupe → situer l'action dans le temps.</span></div><div class="callout"><b>Longueurs</b><br><span class="small">Avant toute comparaison ou opération : mettre toutes les mesures dans la même unité.</span></div></div></div>
+    </section>
+
+    <section id="tomorrow" class="view">
+      <div class="section-title"><h2>Réviser les cours de demain</h2><p>Cette zone reste permanente. Aucun cours absent n'est inventé.</p></div>
+      <div class="card">
+        <h3>Quel cours faut-il préparer ?</h3>
+        <p class="small">Aucun nouveau cours de demain n'a été fourni pour cette semaine. Indiquez le titre exact du chapitre ou envoyez la leçon dans le chat avant de créer une révision de 10 à 15 minutes.</p>
+        <label class="small">Titre exact du chapitre (mémo local)</label>
+        <input id="tomorrowTitle" type="text" placeholder="Ex. Les fractions décimales" />
+        <button class="btn primary" style="margin-top:10px" onclick="saveTomorrow()">Enregistrer le titre</button>
+      </div>
+    </section>
+
+    <section id="parent" class="view">
+      <div class="section-title"><h2>Bilan parent</h2><p>Mis à jour immédiatement à chaque réponse, indice, révélation ou abandon.</p></div>
+      <div class="metric-grid" id="metrics"></div>
+      <div class="legend"><span><i class="dot greenbg"></i> réussi sans aide</span><span><i class="dot orangebg"></i> réussi avec aide</span><span><i class="dot redbg"></i> réponse révélée, abandonnée ou souvent ratée</span></div>
+      <div class="two">
+        <div class="card"><h3>Notions maîtrisées</h3><div id="mastered" class="small"></div></div>
+        <div class="card"><h3>Notions à revoir</h3><div id="review" class="small"></div></div>
+      </div>
+      <div class="card" style="margin-top:14px"><h3>Progression par rapport à la semaine précédente</h3><p id="comparison" class="small"></p></div>
+      <div class="card" id="adultCard" style="margin-top:14px"><h3>Intervention parentale</h3><p id="adultText" class="small"></p></div>
+      <div class="card" style="margin-top:14px"><h3>Détail par notion</h3><div style="overflow:auto"><table class="parent-table"><thead><tr><th>Notion</th><th>Vert</th><th>Orange</th><th>Rouge</th><th>État</th></tr></thead><tbody id="notionRows"></tbody></table></div></div>
+      <div class="card" style="margin-top:14px"><h3>Sauvegarde</h3><p class="small">Les réponses, tentatives, indices, réponses révélées, abandons, position exacte et séries terminées sont sauvegardés dans le navigateur de cet appareil.</p><div class="actions"><button class="btn" onclick="exportProgress()">Exporter la progression</button><button class="btn warn" onclick="resetCurrentWeek()">Réinitialiser cette semaine</button></div></div>
+    </section>
+  </main>
+  <div class="footer">Learning Machine • CM2 • semaine de 4 jours • aucune donnée nominative affichée</div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="loader.js"></script>
+</body>
+</html>
