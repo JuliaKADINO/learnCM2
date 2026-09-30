@@ -3,88 +3,127 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Learning Machine — Semaine 4 jours</title>
+<title>Learning Machine — Sprint veille d'évaluation</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <div class="app">
-  <header class="topbar">
-    <div class="brand"><div class="logo">LM</div><div><h1>Learning Machine</h1><p>CM2 • progression sauvegardée sur cet appareil</p></div></div>
-    <nav class="nav">
-      <button class="active" data-view="home">Cette semaine</button>
-      <button data-view="eval">Préparer une évaluation</button>
-      <button data-view="tomorrow">Réviser les cours de demain</button>
-      <button data-view="parent">Bilan parent</button>
-    </nav>
-  </header>
+<header class="topbar">
+  <div class="brand"><div class="logo">LM</div><div><h1>Learning Machine</h1><p>CM2 • sprint veille d'évaluation</p></div></div>
+  <nav class="nav"><button class="active" onclick="show('home')">Sprint</button><button onclick="show('quiz')">Reprendre</button><button onclick="show('parent')">Bilan parent</button></nav>
+</header>
+<main>
+<section id="home" class="view active">
+  <div class="hero">
+    <div class="eyebrow">Préparation condensée • évaluations demain</div>
+    <h2>Mission double : Verbe + Longueurs</h2>
+    <p>Une seule séance ciblée de 45 à 60 minutes. Les questions des évaluations sont mélangées pour éviter l'effet « je récite la feuille ». Aucun nouveau cours : uniquement entraînement et correction.</p>
+    <div class="chips"><span class="chip">40 QCM</span><span class="chip">3 choix</span><span class="chip">Indice à la demande</span><span class="chip">Réponse expliquée</span><span class="chip">Sauvegarde automatique</span></div>
+    <div class="actions"><button class="btn primary" onclick="startQuiz()">▶ Commencer / reprendre le sprint</button></div>
+  </div>
+  <div class="two" style="margin-top:16px">
+    <div class="card"><div class="eyebrow">Français</div><h3>Le verbe</h3><p class="small">Temps • verbe conjugué • infinitif • 1er / 2e / 3e groupe. Priorité aux erreurs vues dans l'évaluation.</p></div>
+    <div class="card"><div class="eyebrow">Mathématiques</div><h3>Les longueurs</h3><p class="small">Unité adaptée • conversions • comparaison • calculs • problèmes. Règle-clé : convertir dans la même unité avant de calculer.</p></div>
+  </div>
+  <div class="card" style="margin-top:16px"><h3>Plan express</h3><p class="small"><b>1.</b> Faire les 40 questions sans chercher la perfection. <b>2.</b> Demander un indice seulement si nécessaire. <b>3.</b> À la fin, refaire mentalement les rouges et oranges. <b>4.</b> Arrêter : pas de nouveau cours ce soir.</p></div>
+</section>
 
-  <main>
-    <section id="home" class="view active">
-      <div class="hero">
-        <div class="eyebrow">Mission secrète • 4 jours</div>
-        <h2>Quatre missions, zéro routine.</h2>
-        <p>Chaque jour mélange français, maths, anglais et petits défis. Les notions importantes reviennent discrètement pour devenir automatiques. Le dernier jour ne contient <b>aucune nouvelle notion</b> : seulement une réactivation intelligente.</p>
-        <div class="chips"><span class="chip">45–60 min / jour</span><span class="chip">QCM • 3 choix</span><span class="chip">Indice à la demande</span><span class="chip">Reprise exacte après fermeture</span><span class="chip">🎀 mission satin</span></div>
-      </div>
-      <div class="grid" id="dayGrid"></div>
-      <div class="section-title"><h2>Règle de la semaine</h2><p>On avance même si une question résiste.</p></div>
-      <div class="two">
-        <div class="card"><h3>🧠 Mode Jouer</h3><p class="small">Répondre, demander un indice si nécessaire, passer une question ou voir la réponse. Rien ne bloque la fin d'une série.</p></div>
-        <div class="card"><h3>🛠️ Mode Créer</h3><p class="small">Sur certaines questions IA, comprendre comment vérifier une réponse, préciser une consigne et protéger les informations personnelles.</p></div>
-      </div>
-    </section>
+<section id="quiz" class="view">
+  <div class="section-title"><h2>Sprint Verbe + Longueurs</h2><p id="sub">Les deux évaluations sont volontairement mélangées.</p></div>
+  <div class="quiz-shell">
+    <aside class="card side">
+      <div class="row"><b id="counter">Question</b><span class="small" id="pct">0%</span></div>
+      <div class="bar" style="margin-top:9px"><i id="bar"></i></div>
+      <div class="question-nav" id="qnav"></div>
+      <div style="margin-top:14px" class="small">🟢 réussi sans aide<br>🟠 réussi avec aide / après erreur<br>🔴 réponse révélée ou abandonnée</div>
+      <button class="btn ghost" style="margin-top:15px;width:100%" onclick="show('home')">← Accueil</button>
+    </aside>
+    <section class="card question-card" id="qcard"></section>
+  </div>
+</section>
 
-    <section id="quiz" class="view">
-      <div class="section-title"><h2 id="quizTitle"></h2><p id="quizSubtitle"></p></div>
-      <div class="quiz-shell">
-        <aside class="card side">
-          <div class="row"><b id="qCounter">Question</b><span class="small" id="dayPct">0%</span></div>
-          <div class="bar" style="margin-top:9px"><i id="dayBar"></i></div>
-          <div class="question-nav" id="questionNav"></div>
-          <div style="margin-top:14px" class="small">🟢 sans aide &nbsp; 🟠 avec aide &nbsp; 🔴 révélée / abandonnée / souvent ratée</div>
-          <button class="btn ghost" style="margin-top:15px;width:100%" onclick="showView('home')">← Retour aux missions</button>
-        </aside>
-        <section class="card question-card" id="questionCard"></section>
-      </div>
-    </section>
-
-    <section id="eval" class="view">
-      <div class="section-title"><h2>Préparer une évaluation</h2><p>Deux priorités cette semaine, travaillées en petites doses plutôt qu'en bloc.</p></div>
-      <div class="two">
-        <div class="card"><div class="eyebrow">Français</div><h3>Le verbe</h3><p class="small">J1 à J3 : temps, reconnaissance du verbe conjugué, infinitif, groupes. J4 : révision uniquement.</p><div class="bar"><i id="evalVerbBar"></i></div><p class="small" id="evalVerbText"></p></div>
-        <div class="card"><div class="eyebrow">Mathématiques</div><h3>Les mesures de longueurs</h3><p class="small">J1 à J3 : unités, conversions, comparaison, calculs, problèmes. J4 : révision uniquement.</p><div class="bar"><i id="evalLengthBar"></i></div><p class="small" id="evalLengthText"></p></div>
-      </div>
-      <div class="card" style="margin-top:14px"><h3>Ce qui compte avant l'évaluation</h3><div class="two"><div class="callout"><b>Verbe</b><br><span class="small">Trouver le mot qui change → retrouver l'infinitif → déterminer le groupe → situer l'action dans le temps.</span></div><div class="callout"><b>Longueurs</b><br><span class="small">Avant toute comparaison ou opération : mettre toutes les mesures dans la même unité.</span></div></div></div>
-    </section>
-
-    <section id="tomorrow" class="view">
-      <div class="section-title"><h2>Réviser les cours de demain</h2><p>Cette zone reste permanente. Aucun cours absent n'est inventé.</p></div>
-      <div class="card">
-        <h3>Quel cours faut-il préparer ?</h3>
-        <p class="small">Aucun nouveau cours de demain n'a été fourni pour cette semaine. Indiquez le titre exact du chapitre ou envoyez la leçon dans le chat avant de créer une révision de 10 à 15 minutes.</p>
-        <label class="small">Titre exact du chapitre (mémo local)</label>
-        <input id="tomorrowTitle" type="text" placeholder="Ex. Les fractions décimales" />
-        <button class="btn primary" style="margin-top:10px" onclick="saveTomorrow()">Enregistrer le titre</button>
-      </div>
-    </section>
-
-    <section id="parent" class="view">
-      <div class="section-title"><h2>Bilan parent</h2><p>Mis à jour immédiatement à chaque réponse, indice, révélation ou abandon.</p></div>
-      <div class="metric-grid" id="metrics"></div>
-      <div class="legend"><span><i class="dot greenbg"></i> réussi sans aide</span><span><i class="dot orangebg"></i> réussi avec aide</span><span><i class="dot redbg"></i> réponse révélée, abandonnée ou souvent ratée</span></div>
-      <div class="two">
-        <div class="card"><h3>Notions maîtrisées</h3><div id="mastered" class="small"></div></div>
-        <div class="card"><h3>Notions à revoir</h3><div id="review" class="small"></div></div>
-      </div>
-      <div class="card" style="margin-top:14px"><h3>Progression par rapport à la semaine précédente</h3><p id="comparison" class="small"></p></div>
-      <div class="card" id="adultCard" style="margin-top:14px"><h3>Intervention parentale</h3><p id="adultText" class="small"></p></div>
-      <div class="card" style="margin-top:14px"><h3>Détail par notion</h3><div style="overflow:auto"><table class="parent-table"><thead><tr><th>Notion</th><th>Vert</th><th>Orange</th><th>Rouge</th><th>État</th></tr></thead><tbody id="notionRows"></tbody></table></div></div>
-      <div class="card" style="margin-top:14px"><h3>Sauvegarde</h3><p class="small">Les réponses, tentatives, indices, réponses révélées, abandons, position exacte et séries terminées sont sauvegardés dans le navigateur de cet appareil.</p><div class="actions"><button class="btn" onclick="exportProgress()">Exporter la progression</button><button class="btn warn" onclick="resetCurrentWeek()">Réinitialiser cette semaine</button></div></div>
-    </section>
-  </main>
-  <div class="footer">Learning Machine • CM2 • semaine de 4 jours • aucune donnée nominative affichée</div>
+<section id="parent" class="view">
+  <div class="section-title"><h2>Bilan parent — préparation de demain</h2><p>Mis à jour automatiquement.</p></div>
+  <div class="metric-grid" id="metrics"></div>
+  <div class="two" style="margin-top:14px">
+    <div class="card"><h3>Le verbe</h3><div id="verbReport" class="small"></div></div>
+    <div class="card"><h3>Les longueurs</h3><div id="lengthReport" class="small"></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h3>Action parentale de 5 minutes</h3><p id="adult" class="small"></p></div>
+  <div class="actions"><button class="btn primary" onclick="retryWeak()">Refaire les questions fragiles</button><button class="btn warn" onclick="resetAll()">Recommencer le sprint</button></div>
+</section>
+</main>
+<div class="footer">Learning Machine • préparation express • aucune donnée nominative affichée</div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="loader.js"></script>
+<script>
+const Q=[
+{t:'Verbe',n:'Temps',q:'« Il va souvent à la pêche. » À quel temps est le verbe ?',c:['Passé','Présent','Futur'],a:1,h:'L’action se déroule maintenant ou habituellement.',e:'« va » est au présent.'},
+{t:'Longueurs',n:'Unité adaptée',q:'La largeur d’une rue : 7 … Quelle unité convient ?',c:['m','km','cm'],a:0,h:'Une rue n’a ni quelques centimètres ni plusieurs kilomètres de large.',e:'On mesure ici en mètres : 7 m.'},
+{t:'Verbe',n:'Temps',q:'« Elle venait d’arriver. » À quel temps est le verbe ?',c:['Passé','Présent','Futur'],a:0,h:'« venait » indique une action déjà commencée avant maintenant.',e:'La phrase est au passé.'},
+{t:'Longueurs',n:'Conversion',q:'3 m = … cm',c:['30 cm','300 cm','3 000 cm'],a:1,h:'1 m = 100 cm.',e:'3 × 100 = 300 cm.'},
+{t:'Verbe',n:'Temps',q:'« On éteindra les bougies. » À quel temps est le verbe ?',c:['Passé','Présent','Futur'],a:2,h:'La terminaison -ra donne un indice.',e:'« éteindra » est au futur.'},
+{t:'Longueurs',n:'Unité adaptée',q:'La longueur d’un stade : 120 …',c:['m','cm','km'],a:0,h:'Un stade mesure autour d’une centaine de mètres.',e:'120 m est cohérent.'},
+{t:'Verbe',n:'Temps',q:'« Ils franchissent le pont. » À quel temps est le verbe ?',c:['Présent','Passé','Futur'],a:0,h:'Le verbe décrit ce qu’ils font.',e:'« franchissent » est au présent.'},
+{t:'Longueurs',n:'Conversion',q:'7 km = … m',c:['700 m','7 000 m','70 000 m'],a:1,h:'1 km = 1 000 m.',e:'7 × 1 000 = 7 000 m.'},
+{t:'Verbe',n:'Temps',q:'« Un enfant a pris une superbe photo. » À quel temps est le verbe ?',c:['Présent','Futur','Passé'],a:2,h:'« a pris » est formé avec un auxiliaire + participe passé.',e:'« a pris » est au passé composé, donc au passé.'},
+{t:'Longueurs',n:'Unité adaptée',q:'La distance Paris–Londres : 462 …',c:['m','km','cm'],a:1,h:'On compare ici deux villes.',e:'Une distance entre deux villes s’exprime en kilomètres.'},
+{t:'Verbe',n:'Groupes',q:'Quel ensemble contient uniquement des verbes du 1er groupe ?',c:['épeler • payer • jeter','obéir • établir • choisir','prendre • pouvoir • courir'],a:0,h:'Le 1er groupe contient les verbes en -er, sauf aller.',e:'épeler, payer et jeter sont du 1er groupe.'},
+{t:'Longueurs',n:'Conversion',q:'6 dm = … mm',c:['60 mm','600 mm','6 000 mm'],a:1,h:'1 dm = 100 mm.',e:'6 × 100 = 600 mm.'},
+{t:'Verbe',n:'Groupes',q:'Quel ensemble contient uniquement des verbes du 2e groupe ?',c:['prendre • obtenir • courir','obéir • établir • choisir','épeler • payer • jeter'],a:1,h:'Au pluriel, ces verbes font -issons : nous choisissons, nous obéissons…',e:'obéir, établir et choisir sont du 2e groupe.'},
+{t:'Longueurs',n:'Unité adaptée',q:'La hauteur d’un tabouret : 45 …',c:['cm','m','km'],a:0,h:'Pense à la hauteur d’une chaise basse.',e:'45 cm est réaliste.'},
+{t:'Verbe',n:'Groupes',q:'Quel ensemble contient uniquement des verbes du 3e groupe ?',c:['prendre • pouvoir • obtenir • courir','obéir • établir • choisir','épeler • payer • jeter'],a:0,h:'Ce sont les verbes qui ne sont ni du 1er ni du 2e groupe.',e:'prendre, pouvoir, obtenir et courir sont du 3e groupe.'},
+{t:'Longueurs',n:'Conversion',q:'4 cm = … mm',c:['4 mm','40 mm','400 mm'],a:1,h:'1 cm = 10 mm.',e:'4 × 10 = 40 mm.'},
+{t:'Verbe',n:'Infinitif et groupe',q:'Dans « La tempête dévaste les cultures », quel est l’infinitif et le groupe de « dévaste » ?',c:['dévaster — 1er groupe','dévaster — 2e groupe','dévaste — 3e groupe'],a:0,h:'« Il faut … » aide à retrouver l’infinitif.',e:'Il faut dévaster. « dévaster » se termine par -er : 1er groupe.'},
+{t:'Longueurs',n:'Conversion',q:'9 hm = … m',c:['90 m','900 m','9 000 m'],a:1,h:'1 hm = 100 m.',e:'9 × 100 = 900 m.'},
+{t:'Verbe',n:'Infinitif et groupe',q:'Dans « Ce chien semble très obéissant », quel est l’infinitif de « semble » ?',c:['sembler','semblir','semblé'],a:0,h:'On peut dire « il faut … »',e:'L’infinitif est « sembler », verbe du 1er groupe.'},
+{t:'Longueurs',n:'Conversion',q:'1 500 m = … km',c:['0,15 km','1,5 km','15 km'],a:1,h:'1 000 m = 1 km.',e:'1 500 m = 1,5 km.'},
+{t:'Verbe',n:'Infinitif et groupe',q:'Dans « Il vient à l’appel de son maître », quel est l’infinitif et le groupe de « vient » ?',c:['venir — 3e groupe','venir — 2e groupe','venir — 1er groupe'],a:0,h:'« nous venons » ne se termine pas par -issons.',e:'« vient » → venir, 3e groupe.'},
+{t:'Longueurs',n:'Conversion',q:'27 cm = … m',c:['0,27 m','2,7 m','0,027 m'],a:0,h:'100 cm = 1 m.',e:'27 ÷ 100 = 0,27 m.'},
+{t:'Verbe',n:'Infinitif et groupe',q:'Dans « J’ai perdu ma règle », quel est l’infinitif du verbe conjugué ?',c:['perdre','perdu','perdurer'],a:0,h:'« ai perdu » est un temps composé.',e:'Le verbe est « perdre », du 3e groupe.'},
+{t:'Longueurs',n:'Conversion',q:'357 mm = … cm',c:['3,57 cm','35,7 cm','3570 cm'],a:1,h:'10 mm = 1 cm.',e:'357 ÷ 10 = 35,7 cm.'},
+{t:'Verbe',n:'Infinitif et groupe',q:'Dans « Peux-tu me prêter la tienne ? », quel est l’infinitif de « peux » ?',c:['pouvoir','pouvoirs','pouvir'],a:0,h:'On dit « il faut pouvoir ».',e:'« peux » vient du verbe pouvoir, 3e groupe.'},
+{t:'Longueurs',n:'Conversion',q:'550 mm = … cm',c:['5,5 cm','55 cm','5500 cm'],a:1,h:'On divise les millimètres par 10 pour obtenir des centimètres.',e:'550 ÷ 10 = 55 cm.'},
+{t:'Verbe',n:'Infinitif et groupe',q:'« Mes amis italiens adorent la France. » Infinitif et groupe de « adorent » ?',c:['adorer — 1er groupe','adorer — 2e groupe','adorer — 3e groupe'],a:0,h:'L’infinitif se termine par -er.',e:'« adorent » → adorer, 1er groupe.'},
+{t:'Longueurs',n:'Conversion',q:'3 689 km = … m',c:['368 900 m','3 689 000 m','36 890 000 m'],a:1,h:'1 km = 1 000 m.',e:'3 689 × 1 000 = 3 689 000 m.'},
+{t:'Verbe',n:'Infinitif et groupe',q:'« Chaque automne, nous cueillons des champignons. » Infinitif et groupe ?',c:['cueillir — 3e groupe','cueillir — 2e groupe','cueiller — 1er groupe'],a:0,h:'« nous cueillons » ne fait pas « nous cueillissons ».',e:'« cueillons » → cueillir, 3e groupe.'},
+{t:'Longueurs',n:'Comparer',q:'Parmi ces mesures, laquelle est la plus grande ?',c:['50 cm','15 dm 5 mm','15 cm'],a:1,h:'Convertis tout en cm : 15 dm 5 mm = 150,5 cm.',e:'15 dm 5 mm = 150,5 cm, donc c’est la plus grande.'},
+{t:'Verbe',n:'Infinitif et groupe',q:'« La cloche retentit à chaque fin de récréation. » Infinitif et groupe ?',c:['retentir — 2e groupe','retentir — 3e groupe','retenter — 1er groupe'],a:0,h:'Au pluriel : nous retentissons.',e:'retentir appartient au 2e groupe.'},
+{t:'Longueurs',n:'Comparer',q:'Range de la plus grande à la plus petite : 13,3 cm • 15 dm 5 mm • 15 cm • 1 dm 5 mm • 50 cm',c:['15 dm 5 mm > 50 cm > 15 cm > 13,3 cm > 1 dm 5 mm','50 cm > 15 dm 5 mm > 15 cm > 13,3 cm > 1 dm 5 mm','15 dm 5 mm > 15 cm > 50 cm > 13,3 cm > 1 dm 5 mm'],a:0,h:'En cm : 13,3 ; 150,5 ; 15 ; 10,5 ; 50.',e:'150,5 > 50 > 15 > 13,3 > 10,5.'},
+{t:'Verbe',n:'Infinitif et groupe',q:'Dans « si le temps le permet », quel est l’infinitif et le groupe de « permet » ?',c:['permettre — 3e groupe','permettre — 2e groupe','permetter — 1er groupe'],a:0,h:'On dit « permettre », comme « mettre ».',e:'« permet » → permettre, 3e groupe.'},
+{t:'Longueurs',n:'Calcul',q:'7 500 m + 5 km + 60 dm = … m',c:['12 506 m','12 560 m','13 100 m'],a:0,h:'5 km = 5 000 m et 60 dm = 6 m.',e:'7 500 + 5 000 + 6 = 12 506 m.'},
+{t:'Verbe',n:'Infinitif et groupe',q:'« Nous atteindrons le sommet. » Infinitif et groupe de « atteindrons » ?',c:['atteindre — 3e groupe','atteindre — 2e groupe','atteinder — 1er groupe'],a:0,h:'L’infinitif se termine par -re.',e:'« atteindrons » → atteindre, 3e groupe.'},
+{t:'Longueurs',n:'Calcul',q:'2 m + 35 cm + 85 mm = … mm',c:['2 435 mm','2 850 mm','2 385 mm'],a:0,h:'2 m = 2 000 mm et 35 cm = 350 mm.',e:'2 000 + 350 + 85 = 2 435 mm.'},
+{t:'Longueurs',n:'Calcul',q:'2 000 mm + 1,5 m + 15 mm = … cm',c:['351,5 cm','35,15 cm','3 515 cm'],a:0,h:'2 000 mm = 200 cm ; 1,5 m = 150 cm ; 15 mm = 1,5 cm.',e:'200 + 150 + 1,5 = 351,5 cm.'},
+{t:'Longueurs',n:'Calcul',q:'580 mm + 255 cm + 0,35 m = … m',c:['3,48 m','0,348 m','34,8 m'],a:0,h:'580 mm = 0,58 m ; 255 cm = 2,55 m.',e:'0,58 + 2,55 + 0,35 = 3,48 m.'},
+{t:'Longueurs',n:'Problème',q:'Pour un cadeau, il faut 7 dm de fil pour l’entourer et 8 cm de plus pour faire un nœud. Quelle longueur faut-il pour deux cadeaux ?',c:['156 cm','148 cm','78 cm'],a:0,h:'7 dm = 70 cm. Pour un cadeau : 70 + 8.',e:'70 + 8 = 78 cm par cadeau ; 78 × 2 = 156 cm.'},
+{t:'Longueurs',n:'Problème',q:'Dans un rouleau de ficelle de 15 m, on coupe 475 cm puis 34 dm. Quelle longueur reste-t-il ?',c:['685 cm','65 cm','1 025 cm'],a:0,h:'Convertis tout en cm : 15 m = 1 500 cm et 34 dm = 340 cm.',e:'1 500 − 475 − 340 = 685 cm, soit 6,85 m.'}
+];
+const KEY='learnCM2_sprint_eval';
+let S=JSON.parse(localStorage.getItem(KEY)||'null')||{i:0,r:{},done:false};
+function save(){localStorage.setItem(KEY,JSON.stringify(S));}
+function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));if(id==='parent')renderParent();if(id==='quiz')render();window.scrollTo({top:0,behavior:'smooth'});}
+function startQuiz(){show('quiz');}
+function rec(i){return S.r[i]||(S.r[i]={sel:null,attempts:0,hint:false,reveal:false,skip:false,ok:false});}
+function status(i){const r=S.r[i];if(!r)return '';if(r.reveal||r.skip)return 'red';if(r.ok&&(r.hint||r.attempts>1))return 'orange';if(r.ok)return 'green';return 'answered';}
+function render(){if(!document.getElementById('qcard'))return;const i=Math.min(S.i,Q.length-1),q=Q[i],r=rec(i);document.getElementById('counter').textContent=`Question ${i+1} / ${Q.length}`;const done=Object.keys(S.r).filter(k=>S.r[k].ok||S.r[k].skip||S.r[k].reveal).length;document.getElementById('pct').textContent=Math.round(done/Q.length*100)+'%';document.getElementById('bar').style.width=(done/Q.length*100)+'%';document.getElementById('qnav').innerHTML=Q.map((_,j)=>`<button class="qdot ${j===i?'current ':''}${status(j)}" onclick="go(${j})">${j+1}</button>`).join('');
+let choices=q.c.map((x,j)=>{let cls='choice';if(r.sel===j)cls+=' selected';if(r.ok||r.reveal){if(j===q.a)cls+=' correct';else if(r.sel===j)cls+=' wrong';}return `<button class="${cls}" onclick="choose(${j})"><span class="letter">${String.fromCharCode(65+j)}</span><span>${x}</span></button>`}).join('');
+let fb='';if(r.hint&&!r.ok&&!r.reveal)fb+=`<div class="feedback show hint"><b>Indice :</b> ${q.h}</div>`;if(r.ok)fb+=`<div class="feedback show"><b>${r.attempts===1&&!r.hint?'Bien joué !':'Correct.'}</b> ${q.e}</div>`;if(r.reveal)fb+=`<div class="feedback show explain"><b>Réponse :</b> ${q.c[q.a]}. ${q.e}</div>`;
+document.getElementById('qcard').innerHTML=`<div class="meta"><span class="tag priority">${q.t}</span><span class="tag">${q.n}</span></div><h3>${q.q}</h3><div class="choices">${choices}</div>${fb}<div class="actions"><button class="btn" onclick="hint()">💡 Indice</button><button class="btn" onclick="reveal()">Voir la réponse</button><button class="btn warn" onclick="skip()">Passer</button>${i>0?'<button class="btn ghost" onclick="prev()">← Précédente</button>':''}${(r.ok||r.reveal||r.skip)?'<button class="btn primary" onclick="next()">Suivante →</button>':''}</div>`;save();}
+function choose(j){const r=rec(S.i);if(r.ok||r.reveal)return;r.sel=j;r.attempts++;if(j===Q[S.i].a)r.ok=true;save();render();}
+function hint(){const r=rec(S.i);r.hint=true;save();render();}
+function reveal(){const r=rec(S.i);r.reveal=true;r.sel=Q[S.i].a;save();render();}
+function skip(){const r=rec(S.i);r.skip=true;save();next();}
+function next(){if(S.i<Q.length-1){S.i++;save();render();window.scrollTo(0,0);}else{S.done=true;save();show('parent');}}
+function prev(){if(S.i>0){S.i--;save();render();}}
+function go(i){S.i=i;save();render();}
+function classify(list){let g=0,o=0,r=0;list.forEach(i=>{const s=status(i);if(s==='green')g++;else if(s==='orange')o++;else if(s==='red')r++;});return{g,o,r,total:list.length};}
+function summary(obj){const answered=obj.g+obj.o+obj.r;if(!answered)return 'Pas encore de résultat.';let txt=`🟢 ${obj.g} sans aide • 🟠 ${obj.o} avec aide • 🔴 ${obj.r} à revoir.`;if(obj.r>=3)txt+=' Priorité ce soir : reprendre les rouges une seule fois, lentement.';else if(obj.g>=Math.ceil(obj.total*.7))txt+=' Ensemble rassurant pour demain.';return txt;}
+function renderParent(){const all=Q.map((_,i)=>i),vi=all.filter(i=>Q[i].t==='Verbe'),li=all.filter(i=>Q[i].t==='Longueurs');const A=classify(all),V=classify(vi),L=classify(li);document.getElementById('metrics').innerHTML=`<div class="metric"><b>${A.g}</b><span>verts</span></div><div class="metric"><b>${A.o}</b><span>oranges</span></div><div class="metric"><b>${A.r}</b><span>rouges</span></div><div class="metric"><b>${A.g+A.o+A.r}/${Q.length}</b><span>questions traitées</span></div>`;document.getElementById('verbReport').textContent=summary(V);document.getElementById('lengthReport').textContent=summary(L);let adult='Pas besoin d’ajouter du travail : terminer le sprint puis relire uniquement les explications des questions rouges.';if(L.r>=3)adult='5 minutes : écrire km → hm → dam → m → dm → cm → mm sur une feuille, puis refaire deux conversions rouges en disant chaque étape à voix haute.';else if(V.r>=3)adult='5 minutes : prendre trois phrases rouges et demander seulement : 1) quel mot change ? 2) quel infinitif ? 3) quel groupe ?';document.getElementById('adult').textContent=adult;}
+function retryWeak(){const weak=Q.map((_,i)=>i).filter(i=>status(i)==='red'||status(i)==='orange');if(!weak.length){toast('Aucune question fragile à refaire.');return;}S.i=weak[0];show('quiz');}
+function resetAll(){if(confirm('Recommencer toute la préparation ?')){S={i:0,r:{},done:false};save();show('quiz');}}
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.style.display='block';setTimeout(()=>el.style.display='none',2200);}
+render();
+</script>
 </body>
 </html>
